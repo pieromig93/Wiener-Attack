@@ -9,7 +9,6 @@
 
 from sympy import symbols, solve
 import gen_key as gk
-import gmpy2
 
 # ! Il programma si basa sul concetto che una frazione tra 2 numeri è possibile esprimerla come una serie di frazioni, chiamate continous fractions vediamo come calcolarle
 
