@@ -54,7 +54,7 @@ def convergents(a):
     
     return c, num, den
 
-def hackRSA(e,num, den):
+def hack_RSA(e,num, den):
     for i in range(len(num)):
         p_k = num[i]
         p_d = den[i]
@@ -73,14 +73,18 @@ def hackRSA(e,num, den):
                 p_N = p1*p2
                 print(f"Possible value -> |k: {p_k}|d: {p_d}| possible_phi:{p_phi}| possibile_N: {p_N}|roots: {p1}, {p2}")
                 if p_N==N:
-                    print(f"Founded d value: {p_d}")
+                    print(f"Founded d-value: {p_d}")
                     break
+            
+
     return d
 
+
+print("++++++GENERATING KEY...++++++")
 N, e, d, p, q = gk.create_keypair(32)
 print(f"N: {N}, e:{e}, d:{d}, p:{p}, q:{q}")
 
 a = cf_exp(e, N)
 print(f"A coefficients: {a}")
 c, num, den = convergents(a)
-founded_d = hackRSA(e, num, den)
+founded_d = hack_RSA(e, num, den)
