@@ -75,16 +75,22 @@ def hack_RSA(e,num, den):
                 if p_N==N:
                     print(f"Founded d-value: {p_d}")
                     break
-            
 
     return d
 
 
+# Generazione delle chiavi con weakness
 print("++++++GENERATING KEY...++++++")
 N, e, d, p, q = gk.create_keypair(32)
 print(f"N: {N}, e:{e}, d:{d}, p:{p}, q:{q}")
 
+# Calcolo i coefficienti per le frazioni continue
+print("++++++COMPUTING THE A-COEFFICIENTS...++++++")
 a = cf_exp(e, N)
 print(f"A coefficients: {a}")
+
+# Calcolo i convergenti
 c, num, den = convergents(a)
+
+# lancio la suite d'attacco
 founded_d = hack_RSA(e, num, den)
