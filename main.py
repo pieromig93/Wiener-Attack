@@ -8,7 +8,9 @@
 #   - d < (N^1/4)/3
 
 from sympy import symbols, solve
+import matplotlib.pyplot as plt
 import gen_key as gk
+import math
 
 # ! Il programma si basa sul concetto che una frazione tra 2 numeri è possibile esprimerla come una serie di frazioni, chiamate continous fractions vediamo come calcolarle
 
@@ -54,7 +56,7 @@ def convergents(a):
     
     return c, num, den
 
-def hack_RSA(e,num, den):
+def hack_RSA(e, N, num, den):
     for i in range(len(num)):
         p_k = num[i]
         p_d = den[i]
@@ -76,14 +78,14 @@ def hack_RSA(e,num, den):
                     print(f"Founded d-value: {p_d}")
                     break
 
-    return d
+    return p_d
 
 
 # Generazione delle chiavi con weakness
 print("++++++GENERATING KEY...++++++")
 N, e, d, p, q = gk.create_keypair(32)
 print(f"N: {N}, e:{e}, d:{d}, p:{p}, q:{q}")
-
+tot_N = (p-1)*(q-1)
 # Calcolo i coefficienti per le frazioni continue
 print("++++++COMPUTING THE A-COEFFICIENTS...++++++")
 a = cf_exp(e, N)
@@ -92,5 +94,23 @@ print(f"A coefficients: {a}")
 # Calcolo i convergenti
 c, num, den = convergents(a)
 
+# plt.hlines(e/N, 0, 100, linestyles='dashdot', label='e/N')
+# plt.plot(c, 'r-.', label='convergents')
+# plt.scatter(x=[range(0, len(c))], y=c, label='convergent points')
+# plt.legend()
+# plt.axis([0, len(a), 0.1, 1.1])
+# plt.show()
+
+# pi_exp = [3,7,15,1,292,1,1,1,2]
+# c_pi, num_pi, den_pi = convergents(pi_exp)
+
+# plt.hlines(math.pi, 0, 100, linestyles='dashdot', label='pi')
+# plt.plot(c_pi, 'r-.', label='convergents of pi')
+# plt.scatter(x=[range(0, len(c_pi))], y=c_pi )
+# plt.legend()
+# plt.axis([0, len(pi_exp), 2.9, 3.2])
+# print(c_pi)
+# plt.show()
+
 # lancio la suite d'attacco
-founded_d = hack_RSA(e, num, den)
+# founded_d = hack_RSA(e, N, num, den)
