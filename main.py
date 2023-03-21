@@ -68,7 +68,7 @@ def hack_RSA(e, N, num, den):
             # costruisco l'equazione di secondo grado che poi risolvo cercando i valori di fattorizzazione di N
             p = symbols('p', integer=True)
             roots = solve(p**2 +(p_phi-N-1)*p + N, p)
-            
+            print(f"Possible value -> |k: {p_k}|d: {p_d}| possible_phi:{p_phi}|")
             # se le radici sono due 
             if len(roots)==2:
                 p1,p2 = roots
@@ -83,7 +83,7 @@ def hack_RSA(e, N, num, den):
 
 # Generazione delle chiavi con weakness
 print("++++++GENERATING KEY...++++++")
-N, e, d, p, q = gk.create_keypair(32)
+N, e, d, p, q = gk.create_keypair(2048)
 print(f"N: {N}, e:{e}, d:{d}, p:{p}, q:{q}")
 tot_N = (p-1)*(q-1)
 # Calcolo i coefficienti per le frazioni continue
@@ -113,4 +113,6 @@ c, num, den = convergents(a)
 # plt.show()
 
 # lancio la suite d'attacco
-# founded_d = hack_RSA(e, N, num, den)
+founded_d = hack_RSA(e, N, num, den)
+
+# Aggiungere sotto suggerimento dell'Ing. Fioretti il tempo impiegato dalle varie esecuzioni su chiavi di lunghezza comune
