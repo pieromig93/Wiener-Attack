@@ -11,6 +11,7 @@ from sympy import symbols, solve
 import matplotlib.pyplot as plt
 import gen_key as gk
 import math
+import time
 
 # ! Il programma si basa sul concetto che una frazione tra 2 numeri è possibile esprimerla come una serie di frazioni, chiamate continous fractions vediamo come calcolarle
 
@@ -68,54 +69,79 @@ def hack_RSA(e, N, num, den):
             # costruisco l'equazione di secondo grado che poi risolvo cercando i valori di fattorizzazione di N
             p = symbols('p', integer=True)
             roots = solve(p**2 +(p_phi-N-1)*p + N, p)
-            print(f"Possible value -> |k: {p_k}|d: {p_d}| possible_phi:{p_phi}|")
+            # print(f"Possible value -> |k: {p_k}|d: {p_d}| possible_phi:{p_phi}|")
             # se le radici sono due 
             if len(roots)==2:
                 p1,p2 = roots
                 p_N = p1*p2
-                print(f"Possible value -> |k: {p_k}|d: {p_d}| possible_phi:{p_phi}| possibile_N: {p_N}|roots: {p1}, {p2}")
+                print(f"POSSIBLE VALUE:\n-k: {p_k}\n-d: {p_d}\n-possible_phi:{p_phi}\n-possibile_N: {p_N}\n-roots: {p1}, {p2}\n")
                 if p_N==N:
-                    print(f"Founded d-value: {p_d}")
+                    print(f"%%%%% Founded d-value: {p_d} %%%%%")
                     break
 
     return p_d
 
 
-'''
-Generazione delle chiavi con vulnerabilità partendo da valori randomici di 32 bit 
-(è possibile scegliere un valore più grande aumentando la dimensione del parametro passato)
-'''
-print("++++++GENERATING KEY...++++++")
-N, e, d, p, q = gk.create_keypair(2048)
-print(f"N: {N}, e:{e}, d:{d}, p:{p}, q:{q}")
-tot_N = (p-1)*(q-1)
-# Calcolo i coefficienti per le frazioni continue
-print("++++++COMPUTING THE A-COEFFICIENTS...++++++")
-a = cf_exp(e, N)
-print(f"A coefficients: {a}")
 
-# Calcolo i convergenti
-c, num, den = convergents(a)
+# dimensione in bit iniziale di p e q
+starting_bit = 32
 
-plt.hlines(e/N, 0, 100, linestyles='dashdot', label='e/N')
-plt.plot(c, 'r-.', label='convergents')
-plt.scatter(x=[range(0, len(c))], y=c, label='convergent points')
+# lista che mi serve per stampare il grafico
+bit_used = []
+
+# Lista dei tempi medi
+mean_exec_time = []
+
+i = 1
+while i<64:
+    k = 0
+    while k<3:
+        # Lista che contiene i tempi di esecuzione
+        execution_time = []
+
+        '''
+        Generazione delle chiavi con vulnerabilità partendo da valori randomici di 32 bit 
+        (è possibile scegliere un valore più grande aumentando la dimensione del parametro passato)
+        '''
+        print("-----------------------------")
+        print("++++++GENERATING KEY...++++++")
+        bit=starting_bit*i
+        N, e, d, p, q = gk.create_keypair(bit)
+        print(f"Bit used: {bit}\n- N: {N}\n- e:{e}\n- d:{d}\n- p:{p}\n- q:{q}\n")
+        tot_N = (p-1)*(q-1)
+
+        # prendo il tempo dopo la generazione delle chiavi per non invalidare la misura
+        starting_time = time.time()
+
+        # Calcolo i coefficienti per le frazioni continue
+        print("++++++COMPUTING THE A-COEFFICIENTS...++++++")
+        a = cf_exp(e, N)
+        print(f"A coefficients: {a}")
+
+        # Calcolo i convergenti
+        c, num, den = convergents(a)
+
+        # lancio la suite d'attacco
+        founded_d = hack_RSA(e, N, num, den)
+        
+        # gestione dei tempi
+        end_time = time.time()
+        execution_time.append(end_time-starting_time)
+        
+        
+        k=k+1
+        # Aggiungere sotto suggerimento dell'Ing. Fioretti il tempo impiegato dalle varie esecuzioni su chiavi di lunghezza comune
+    bit_used.append(bit)
+    mean_exec_time.append(sum(execution_time)/len(execution_time))
+    i=i*2
+
+print(mean_exec_time)
+print(bit_used)
+
+bit_used_dim = range(len(bit_used))
+plt.plot(bit_used_dim, mean_exec_time, 'r-', label='tempo di esecuzione medio', linewidth = 4)
+plt.xticks(bit_used_dim, bit_used)
 plt.legend()
-plt.axis([0, len(a), 0.1, 1.1])
-plt.show()
-
-# pi_exp = [3,7,15,1,292,1,1,1,2]
-# c_pi, num_pi, den_pi = convergents(pi_exp)
-
-# plt.hlines(math.pi, 0, 100, linestyles='dashdot', label='pi')
-# plt.plot(c_pi, 'r-.', label='convergents of pi')
-# plt.scatter(x=[range(0, len(c_pi))], y=c_pi )
-# plt.legend()
-# plt.axis([0, len(pi_exp), 2.9, 3.2])
-# print(c_pi)
-# plt.show()
-
-# lancio la suite d'attacco
-founded_d = hack_RSA(e, N, num, den)
-
-# Aggiungere sotto suggerimento dell'Ing. Fioretti il tempo impiegato dalle varie esecuzioni su chiavi di lunghezza comune
+plt.xlabel(xlabel='Bit-size[bit]')
+plt.ylabel(ylabel='Time[s]')
+plt.show() 
