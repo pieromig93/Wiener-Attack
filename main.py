@@ -103,7 +103,7 @@ while i<64:
         Generazione delle chiavi con vulnerabilità partendo da valori randomici di 32 bit 
         (è possibile scegliere un valore più grande aumentando la dimensione del parametro passato)
         '''
-        print("-----------------------------")
+        print("\n-----------------------------")
         print("++++++GENERATING KEY...++++++")
         bit=starting_bit*i
         N, e, d, p, q = gk.create_keypair(bit)
@@ -144,4 +144,4 @@ plt.xticks(bit_used_dim, bit_used)
 plt.legend()
 plt.xlabel(xlabel='Bit-size[bit]')
 plt.ylabel(ylabel='Time[s]')
-plt.show() 
+plt.show()
