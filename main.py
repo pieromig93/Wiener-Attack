@@ -34,7 +34,7 @@ def cf_exp(num, den):
 
     return a
 
-# partendo dai valori dei quozienti andiamo a calcolare i convergenti
+# partendo dai valori dei quozienti posizionati in una lista andiamo a calcolare i convergenti
 def convergents(a):
     num = []
     den = []
@@ -81,7 +81,10 @@ def hack_RSA(e, N, num, den):
     return p_d
 
 
-# Generazione delle chiavi con weakness
+'''
+Generazione delle chiavi con vulnerabilità partendo da valori randomici di 32 bit 
+(è possibile scegliere un valore più grande aumentando la dimensione del parametro passato)
+'''
 print("++++++GENERATING KEY...++++++")
 N, e, d, p, q = gk.create_keypair(2048)
 print(f"N: {N}, e:{e}, d:{d}, p:{p}, q:{q}")
@@ -94,12 +97,12 @@ print(f"A coefficients: {a}")
 # Calcolo i convergenti
 c, num, den = convergents(a)
 
-# plt.hlines(e/N, 0, 100, linestyles='dashdot', label='e/N')
-# plt.plot(c, 'r-.', label='convergents')
-# plt.scatter(x=[range(0, len(c))], y=c, label='convergent points')
-# plt.legend()
-# plt.axis([0, len(a), 0.1, 1.1])
-# plt.show()
+plt.hlines(e/N, 0, 100, linestyles='dashdot', label='e/N')
+plt.plot(c, 'r-.', label='convergents')
+plt.scatter(x=[range(0, len(c))], y=c, label='convergent points')
+plt.legend()
+plt.axis([0, len(a), 0.1, 1.1])
+plt.show()
 
 # pi_exp = [3,7,15,1,292,1,1,1,2]
 # c_pi, num_pi, den_pi = convergents(pi_exp)
