@@ -81,12 +81,10 @@ def hack_RSA(e, N, num, den):
 
     return p_d
 
-
-
 # dimensione in bit iniziale di p e q
 starting_bit = 32
 
-# lista che mi serve per stampare il grafico
+# lista che mi serve per stampare il grafico ed ottenere una lista di valori ce contiene il numero di bit utilizzati
 bit_used = []
 
 # Lista dei tempi medi
@@ -100,7 +98,8 @@ while i<64:
         execution_time = []
 
         '''
-        Generazione delle chiavi con vulnerabilità partendo da valori randomici di 32 bit 
+        Generazione delle chiavi con vulnerabilità partendo da valori randomici di bit che viene incrementata all'aumentare del
+        di iterazioni
         (è possibile scegliere un valore più grande aumentando la dimensione del parametro passato)
         '''
         print("\n-----------------------------")
@@ -128,10 +127,12 @@ while i<64:
         end_time = time.time()
         execution_time.append(end_time-starting_time)
         
-        
         k=k+1
-        # Aggiungere sotto suggerimento dell'Ing. Fioretti il tempo impiegato dalle varie esecuzioni su chiavi di lunghezza comune
+    
+    # Salvo il valore dei bit utilizzati
     bit_used.append(bit)
+
+    # Calcolo il tempo medio su 3 esecuzioni a bit fissati
     mean_exec_time.append(sum(execution_time)/len(execution_time))
     i=i*2
 
@@ -139,9 +140,12 @@ print(mean_exec_time)
 print(bit_used)
 
 bit_used_dim = range(len(bit_used))
-plt.plot(bit_used_dim, mean_exec_time, 'r-', label='tempo di esecuzione medio', linewidth = 4)
+plt.plot(bit_used_dim, mean_exec_time, 'r-', label='Mean Exec Time', linewidth = 4)
 plt.xticks(bit_used_dim, bit_used)
 plt.legend()
-plt.xlabel(xlabel='Bit-size[bit]')
+plt.xlabel(xlabel='p and q Bit-size[bit]')
 plt.ylabel(ylabel='Time[s]')
 plt.show()
+
+# caso d'uso
+# interpolazione tempi su excel?
