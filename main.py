@@ -43,7 +43,7 @@ def convergents(a):
 
     for i in range(len(a)):
         if i == 0:
-            num.append(int(a[i]))
+            num.append(a[i])
             den.append(1)
 
         elif i == 1:
