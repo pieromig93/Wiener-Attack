@@ -15,3 +15,17 @@
         # plt.axis([0, len(pi_exp), 2.9, 3.2])
         # print(c_pi)
         # plt.show()
+
+import matplotlib.pyplot as plt
+
+list_bit = [32, 64, 128, 256, 512, 1024]
+n_logn = []
+n_2 = []
+
+bit_used_dim = range(len(list_bit))
+plt.plot(bit_used_dim, list_bit, 'b-', label='O(n)', linewidth = 3)
+plt.xticks(bit_used_dim, list_bit)
+plt.legend()
+plt.xlabel(xlabel='p and q Bit-size[bit]')
+plt.ylabel(ylabel='')
+plt.show()

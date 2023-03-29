@@ -10,7 +10,6 @@
 from sympy import symbols, solve
 import matplotlib.pyplot as plt
 import gen_key as gk
-import math
 import time
 
 # ! Il programma si basa sul concetto che una frazione tra 2 numeri è possibile esprimerla come una serie di frazioni, chiamate continous fractions vediamo come calcolarle
@@ -107,7 +106,6 @@ while i<64:
         bit=starting_bit*i
         N, e, d, p, q = gk.create_keypair(bit)
         print(f"Bit used: {bit}\n- N: {N}\n- e:{e}\n- d:{d}\n- p:{p}\n- q:{q}\n")
-        tot_N = (p-1)*(q-1)
 
         # prendo il tempo dopo la generazione delle chiavi per non invalidare la misura
         starting_time = time.time()
@@ -146,6 +144,8 @@ plt.legend()
 plt.xlabel(xlabel='p and q Bit-size[bit]')
 plt.ylabel(ylabel='Time[s]')
 plt.show()
+
+# idea per la complessità computazionale a partire dai tempi
 
 # caso d'uso
 # interpolazione tempi su excel?
