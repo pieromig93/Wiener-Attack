@@ -92,7 +92,7 @@ mean_exec_time = []
 i = 1
 while i<64:
     k = 0
-    while k<3:
+    while k<1:
         # Lista che contiene i tempi di esecuzione
         execution_time = []
 
@@ -133,6 +133,7 @@ while i<64:
     # Calcolo il tempo medio su 3 esecuzioni a bit fissati
     mean_exec_time.append(sum(execution_time)/len(execution_time))
     i=i*2
+    time.sleep(2)
 
 print(mean_exec_time)
 print(bit_used)
