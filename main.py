@@ -92,7 +92,7 @@ mean_exec_time = []
 i = 1
 while i<64:
     k = 0
-    while k<1:
+    while k<3:
         # Lista che contiene i tempi di esecuzione
         execution_time = []
 
@@ -140,13 +140,9 @@ print(bit_used)
 
 bit_used_dim = range(len(bit_used))
 plt.plot(bit_used_dim, mean_exec_time, 'r-', label='Mean Exec Time', linewidth = 4)
+plt.scatter(x=bit_used_dim, y=mean_exec_time)
 plt.xticks(bit_used_dim, bit_used)
 plt.legend()
 plt.xlabel(xlabel='p and q Bit-size[bit]')
 plt.ylabel(ylabel='Time[s]')
 plt.show()
-
-# idea per la complessità computazionale a partire dai tempi
-
-# caso d'uso
-# interpolazione tempi su excel?
