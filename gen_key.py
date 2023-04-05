@@ -9,10 +9,12 @@ urandom = random.SystemRandom()
 def get_prime(size):
     while True:
         r = urandom.getrandbits(size)
-        if gmpy2.is_prime(r): # Miller-rabin
+        # controllo se il numero è primo
+        if gmpy2.is_prime(r): 
             return r
 
 def test_key(N, e, d):
+    # creo il messaggio da inviare come N-123 e lo shifto a dx di 7 posizioni
     msg = (N - 123) >> 7
     c = pow(msg, e, N)
     return pow(c, d, N) ==  msg
@@ -29,6 +31,8 @@ def create_keypair(size):
 
     # Recall that: d < (N^(0.25))/3
     max_d = c_div(isqrt(isqrt(N)), 3)
+
+    # prendo la dimensione massima di d e gli sottraggo un bit
     max_d_bits = max_d.bit_length() - 1
 
     while True:

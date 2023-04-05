@@ -68,9 +68,11 @@ def hack_RSA(e, N, num, den):
             # costruisco l'equazione di secondo grado che poi risolvo cercando i valori di fattorizzazione di N
             p = symbols('p', integer=True)
             roots = solve(p**2 +(p_phi-N-1)*p + N, p)
-            # print(f"Possible value -> |k: {p_k}|d: {p_d}| possible_phi:{p_phi}|")
+            
             # se le radici sono due 
             if len(roots)==2:
+                # faccio questo controllo perché ho settato integer=true nella risoluzione dell equazione, questo significa che mi restituirà dei valori solo quando 
+                # il risultato dell'equazione è un integer
                 p1,p2 = roots
                 p_N = p1*p2
                 print(f"POSSIBLE VALUE:\n-k: {p_k}\n-d: {p_d}\n-possible_phi:{p_phi}\n-possibile_N: {p_N}\n-roots: {p1}, {p2}\n")
@@ -133,7 +135,7 @@ while i<64:
     # Calcolo il tempo medio su 3 esecuzioni a bit fissati
     mean_exec_time.append(sum(execution_time)/len(execution_time))
     i=i*2
-    time.sleep(2)
+    # time.sleep(2)
 
 print(mean_exec_time)
 print(bit_used)
